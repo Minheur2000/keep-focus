@@ -1,10 +1,10 @@
-package your.packagename.tabs.all;
+package net.minheur.keepFocus.tabs.all;
 
 import javafx.scene.layout.VBox;
 import net.minheur.potoflux.screen.tabs.BaseVTab;
 import net.minheur.potoflux.translations.Translations;
 
-public class YourTabClass extends BaseVTab<VBox> {
+public class FocusTab extends BaseVTab<VBox> {
     @Override
     protected void instantiate() {
         PANEL = new VBox();
@@ -17,11 +17,11 @@ public class YourTabClass extends BaseVTab<VBox> {
 
     @Override
     protected String getTitle() {
-        return Translations.get("yourmodid:tabs.yourTab.title");
+        return Translations.get("keep_focus:tabs.focus.title");
     }
 
     @Override
     public String getName() {
-        return Translations.get("yourmodid:tabs.yourTab.name");
+        return Translations.get("keep_focus:tabs.focus.name");
     }
 }
