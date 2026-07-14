@@ -1,5 +1,6 @@
 package net.minheur.keepFocus;
 
+import net.minheur.keepFocus.style.FocusStylesheets;
 import net.minheur.potoflux.PotoFlux;
 import net.minheur.potoflux.loader.PotoFluxLoadingContext;
 import net.minheur.potoflux.loader.mod.Mod;
@@ -24,6 +25,7 @@ public class KeepFocus {
 
         modEventBus.addListener(Tabs::register);
         modEventBus.addListener(this::onRegisterLang);
+        modEventBus.addListener(FocusStylesheets::register);
     }
 
     private void onRegisterLang(RegisterLangEvent event) {

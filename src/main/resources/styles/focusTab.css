@@ -1,0 +1,18 @@
+.focusMod.tabContent .focus-title  {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+.focusMod.tabContent .timer {
+    -fx-font-size: 64px;
+    -fx-font-weight: bold;
+}
+.focusMod.tabContent .button {
+    -fx-font-size: 14px;
+}
+.focusMod.tabContent .card {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-spacing: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,.15), 15, 0.2, 0, 4);
+}
