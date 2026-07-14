@@ -3,6 +3,7 @@ package net.minheur.keepFocus.content;
 import javafx.scene.control.Alert;
 import net.minheur.keepFocus.defs.Tabs;
 import net.minheur.potoflux.PotoFlux;
+import net.minheur.potoflux.translations.Translations;
 import net.minheur.potoflux.ui.UiUtils;
 import net.minheur.potoflux.utils.SmartSupplier;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,8 @@ public class FocusController {
 
     public static void startSession(@NotNull String objective) {
         if (objective.trim().isEmpty()) {
-            UiUtils.showErrorPane("Please enter an objective for the session.", "Can't start session!"); // todo
+            UiUtils.showErrorPane(Translations.get("keep_focus:noObjective.content"),
+                    Translations.get("keep_focus:noObjective.header"));
             return;
         }
 
@@ -46,7 +48,7 @@ public class FocusController {
         FocusSession.actualSession.updateSessionDone();
         focusTab.get().updateButtonStates(false, false, false);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your session is finished !", UiUtils.okButton.get());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, Translations.get("keep_focus:sessionFinished"), UiUtils.okButton.get());
         show(alert);
 
         focusTab.get().updateButtonStates(true, false, false);

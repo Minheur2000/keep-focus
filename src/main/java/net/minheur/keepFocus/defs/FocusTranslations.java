@@ -18,6 +18,38 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
         addFocusTab("sessionLabel")
                 .en("Session $$1 / $$2")
                 .fr("Session $$1 / $$2");
+
+        addFocusTab("task")
+                .en("Task")
+                .fr("Tache");
+        addFocusTab("task", "prompt")
+                .en("Enter a task for this session...")
+                .fr("Entrez une tache pour cette session...");
+
+        addFocusTab("button", "start")
+                .en("▶ Start")
+                .fr("▶ Démarrer");
+        addFocusTab("button", "pause")
+                .en("⏸ Pause")
+                .fr("⏸ Pause");
+        addFocusTab("button", "stop")
+                .en("■ Stop")
+                .fr("■ Stop");
+
+        add("noObjective", "content")
+                .en("Please enter an objective for this session.")
+                .fr("Veillez entrer un objectif pour cette session.");
+        add("noObjective", "header")
+                .en("Can't start session!")
+                .fr("Impossible de démarrer la session !");
+
+        add("sessionFinished")
+                .en("Your session if finished!\nStart the next one")
+                .fr("Votre session est temriné !\nDémarrez la suivante");
+
+        add("pause")
+                .en("Pause")
+                .fr("Pause");
     }
 
     // tabs helper

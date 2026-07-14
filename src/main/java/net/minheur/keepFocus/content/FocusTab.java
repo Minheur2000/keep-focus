@@ -37,26 +37,26 @@ public class FocusTab extends BaseVTab<BorderPane> {
     @Override
     protected void setPanel() {
         // title
-        Label title = new Label("Focus"); // todo
-        title.getStyleClass().add("focus-title"); // TODO
+        Label title = new Label(Translations.get("keep_focus:tabs.focus.title"));
+        title.getStyleClass().add("focus-title");
 
         // task
-        Label taskLabel = new Label("Task"); // todo
+        Label taskLabel = new Label(Translations.get("keep_focus:tabs.focus.task"));
 
         taskField = new TextField();
-        taskField.setPromptText("Enter a task for this session..."); // todo
+        taskField.setPromptText(Translations.get("keep_focus:tabs.focus.task.prompt"));
 
         VBox taskBox = new VBox(5, taskLabel, taskField);
         taskBox.setMaxWidth(350);
 
         // timer
         timer = new Label("25:00");
-        timer.getStyleClass().add("timer"); // TODO
+        timer.getStyleClass().add("timer");
 
         // buttons
-        start = new Button("▶ Start"); // todo
-        pause = new Button("⏸ Pause"); // todo
-        stop = new Button("■ Stop"); // todo
+        start = new Button(Translations.get("keep_focus:tabs.focus.button.start"));
+        pause = new Button(Translations.get("keep_focus:tabs.focus.button.pause"));
+        stop = new Button(Translations.get("keep_focus:tabs.focus.button.stop"));
 
         stop.setDisable(true);
         pause.setDisable(true);
@@ -105,11 +105,6 @@ public class FocusTab extends BaseVTab<BorderPane> {
     }
     public void updateObjectiveLabel(String content) {
         taskField.setText(content);
-    }
-
-    @Override
-    protected String getTitle() {
-        return Translations.get("keep_focus:tabs.focus.title");
     }
 
     @Override

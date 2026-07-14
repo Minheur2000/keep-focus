@@ -1,6 +1,7 @@
 package net.minheur.keepFocus.content;
 
 import javafx.util.Duration;
+import net.minheur.potoflux.translations.Translations;
 
 import java.util.function.Consumer;
 
@@ -36,7 +37,7 @@ public class FocusSession {
     }
 
     private void playPause() {
-        updateObjective.accept("Pause"); // todo
+        updateObjective.accept(Translations.get("keep_focus:pause"));
         timer.run(pauseDuration);
     }
     private void playSession() {
