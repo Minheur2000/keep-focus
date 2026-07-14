@@ -1,4 +1,4 @@
-package net.minheur.keepFocus.tabs;
+package net.minheur.keepFocus.defs;
 
 import net.minheur.keepFocus.KeepFocus;
 import net.minheur.potoflux.loader.mod.events.RegisterTabsEvent;
@@ -6,7 +6,7 @@ import net.minheur.potoflux.registry.RegistryList;
 import net.minheur.potoflux.screen.tabs.Tab;
 import net.minheur.potoflux.utils.SmartSupplier;
 import net.minheur.potoflux.utils.ressourcelocation.ResourceLocation;
-import net.minheur.keepFocus.tabs.all.FocusTab;
+import net.minheur.keepFocus.content.FocusTab;
 
 public class Tabs {
     private static final RegistryList<Tab> LIST = new RegistryList<>();

@@ -1,4 +1,4 @@
-package net.minheur.keepFocus.style;
+package net.minheur.keepFocus.defs;
 
 import net.minheur.keepFocus.KeepFocus;
 import net.minheur.potoflux.loader.mod.events.RegisterStylesheetsEvent;

@@ -1,4 +1,4 @@
-package net.minheur.keepFocus.tabs.all;
+package net.minheur.keepFocus.content;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

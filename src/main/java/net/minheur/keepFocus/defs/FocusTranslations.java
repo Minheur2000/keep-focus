@@ -1,4 +1,4 @@
-package net.minheur.keepFocus.translations;
+package net.minheur.keepFocus.defs;
 
 import net.minheur.keepFocus.KeepFocus;
 import net.minheur.potoflux.translations.AbstractTranslationsRegistry;
