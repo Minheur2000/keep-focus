@@ -14,6 +14,10 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
                 .en("Focus Timer");
         addFocusTab("title")
                 .en("Keep Focus");
+
+        addFocusTab("sessionLabel")
+                .en("Session $$1 / $$2")
+                .fr("Session $$1 / $$2");
     }
 
     // tabs helper
