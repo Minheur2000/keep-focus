@@ -10,14 +10,14 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
 
     @Override
     protected void makeTranslation() {
-        addYourTab("name")
+        addFocusTab("name")
                 .en("Focus Timer");
-        addYourTab("title")
+        addFocusTab("title")
                 .en("Keep Focus");
     }
 
     // tabs helper
-    private TranslationBuilder addYourTab(String... children) {
+    private TranslationBuilder addFocusTab(String... children) {
         return addTab("focus", children);
     }
 }
