@@ -21,8 +21,8 @@ public class FocusController {
     ) {
         // empty checks
         if (objective.trim().isEmpty()) { // obj empty
-            UiUtils.showErrorPane(Translations.get("keep_focus:noObjective.content"),
-                    Translations.get("keep_focus:noObjective.header")); // todo: rm noObjective
+            UiUtils.showErrorPane(Translations.get("keep_focus:failedSession.objective"),
+                    Translations.get("keep_focus:failedSession"));
             return;
         }
 
@@ -34,8 +34,8 @@ public class FocusController {
         if (isTimerIncorrect(pauseMinutes)) return;
 
         if (sessionInt < 1) { // session 1 minimum
-            UiUtils.showErrorPane("Session should at least be 1!", // todo
-                    Translations.get("keep_focus:noObjective.header")); // todo: obj
+            UiUtils.showErrorPane(Translations.get("keep_focus:failedSession.sessionAmount"),
+                    Translations.get("keep_focus:failedSession"));
         }
 
         Duration session = Duration.minutes(sessionMinutes);
@@ -112,8 +112,8 @@ public class FocusController {
 
     private static boolean isTimerIncorrect(int minutes) {
         if (minutes < 0) { // negative minutes
-            UiUtils.showErrorPane("Please enter a positive amount of minutes!", // todo
-                    Translations.get("keep_focus:noObjective.header")); // todo: obj
+            UiUtils.showErrorPane(Translations.get("keep_focus:failedSession.duration"),
+                    Translations.get("keep_focus:failedSession"));
             return true;
         }
         return false;

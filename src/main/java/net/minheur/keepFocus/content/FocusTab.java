@@ -71,15 +71,15 @@ public class FocusTab extends BaseVTab<BorderPane> {
         HBox sessionTimer = new HBox(15);
         sessionTimer.setMaxWidth(350);
         TextField sessionMinutes = new TextField("25");
-        sessionTimer.getChildren().addAll(sessionMinutes, new Label("minutes")); // todo
+        sessionTimer.getChildren().addAll(sessionMinutes, new Label(Translations.get("keep_focus:minutes")));
 
         HBox pauseTimer = new HBox(15);
         pauseTimer.setMaxWidth(350);
         TextField pauseMinutes = new TextField("5");
-        pauseTimer.getChildren().addAll(pauseMinutes, new Label("minutes")); // todo
+        pauseTimer.getChildren().addAll(pauseMinutes, new Label(Translations.get("keep_focus:minutes")));
 
         // session
-        Label sessionTitle = new Label("Amount of sessions:"); // todo
+        Label sessionTitle = new Label(Translations.get("keep_focus:sessionAmount"));
         TextField sessionField = new TextField("4");
         sessionField.setPromptText("4");
 

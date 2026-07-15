@@ -36,20 +36,32 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
                 .en("■ Stop")
                 .fr("■ Stop");
 
-        add("noObjective", "content")
-                .en("Please enter an objective for this session.")
-                .fr("Veillez entrer un objectif pour cette session.");
-        add("noObjective", "header")
+        add("failedSession")
                 .en("Can't start session!")
                 .fr("Impossible de démarrer la session !");
+        add("failedSession", "objective")
+                .en("Please enter an objective for this session.")
+                .fr("Veillez entrer un objectif pour cette session.");
+        add("failedSession", "sessionAmount")
+                .en("Please choose at least 1 session!")
+                .fr("Veuillez choisir au moins 1 session");
+        add("failedSession", "duration")
+                .en("Please enter at least 1 minute!")
+                .fr("Veuillez entrer au moins 1 minute !");
 
         add("sessionFinished")
                 .en("Your session if finished!\nStart the next one")
                 .fr("Votre session est temriné !\nDémarrez la suivante");
+        add("sessionAmount")
+                .en("Amount of sessions")
+                .fr("Nombre de sessions");
 
         add("pause")
                 .en("Pause")
                 .fr("Pause");
+        add("minutes")
+                .en("Minutes")
+                .fr("Minutes");
     }
 
     // tabs helper
