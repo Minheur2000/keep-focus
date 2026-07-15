@@ -7,9 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import net.minheur.potoflux.screen.tabs.BaseVTab;
 import net.minheur.potoflux.translations.Translations;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.minheur.potoflux.Functions.formatMessage;
@@ -26,12 +28,16 @@ public class FocusTab extends BaseVTab<BorderPane> {
         vContent.getStyleClass().addAll("focusMod", "tabContent");
     }
 
+    private StackPane content;
+    private VBox taskCard;
+    private VBox queryCard;
+
     private Button start;
     private Button pause;
     private Button stop;
 
     private Label session;
-    private TextField taskField;
+    private Label task;
     private Label timer;
 
     @Override
@@ -40,13 +46,74 @@ public class FocusTab extends BaseVTab<BorderPane> {
         Label title = new Label(Translations.get("keep_focus:tabs.focus.title"));
         title.getStyleClass().add("focus-title");
 
-        // task
+        content = new StackPane();
+        taskCard = createTaskCard();
+        queryCard = createQueryCard();
+
+        vContent.getChildren().addAll(
+                title,
+                content
+        );
+
+        queryMod();
+    }
+
+    private @NotNull VBox createQueryCard() {
         Label taskLabel = new Label(Translations.get("keep_focus:tabs.focus.task"));
 
-        taskField = new TextField();
+        TextField taskField = new TextField();
         taskField.setPromptText(Translations.get("keep_focus:tabs.focus.task.prompt"));
 
         VBox taskBox = new VBox(5, taskLabel, taskField);
+        taskBox.setMaxWidth(350);
+
+        // timers
+        HBox sessionTimer = new HBox(15);
+        sessionTimer.setMaxWidth(350);
+        TextField sessionMinutes = new TextField("25");
+        sessionTimer.getChildren().addAll(sessionMinutes, new Label("minutes")); // todo
+
+        HBox pauseTimer = new HBox(15);
+        pauseTimer.setMaxWidth(350);
+        TextField pauseMinutes = new TextField("5");
+        pauseTimer.getChildren().addAll(pauseMinutes, new Label("minutes")); // todo
+
+        // session
+        Label sessionTitle = new Label("Amount of sessions:"); // todo
+        TextField sessionField = new TextField("4");
+        sessionField.setPromptText("4");
+
+        HBox session = new HBox(15, sessionTitle, sessionField);
+        session.setMaxWidth(350);
+
+        VBox card = new VBox(20);
+        card.getStyleClass().add("card");
+        card.setAlignment(Pos.CENTER);
+        card.setMaxWidth(420);
+
+        // button
+        Button save = new Button("Start session");
+        save.setOnAction(event -> FocusController.makeSession(
+                taskField.getText(),
+                sessionMinutes.getText(),
+                pauseMinutes.getText(),
+                sessionField.getText()
+        ));
+
+        card.getChildren().addAll(
+                taskBox,
+                sessionTimer, pauseTimer,
+                session,
+                save
+        );
+        return card;
+    }
+    private @NotNull VBox createTaskCard() {
+        // task
+        Label taskLabel = new Label(Translations.get("keep_focus:tabs.focus.task"));
+        task = new Label();
+
+        VBox taskBox = new VBox(5, taskLabel, task);
         taskBox.setMaxWidth(350);
 
         // timer
@@ -61,7 +128,7 @@ public class FocusTab extends BaseVTab<BorderPane> {
         stop.setDisable(true);
         pause.setDisable(true);
 
-        start.setOnAction(event -> FocusController.startSession(taskField.getText()));
+        start.setOnAction(event -> FocusController.startSession());
         pause.setOnAction(event -> FocusController.pauseSession());
         stop.setOnAction(event -> FocusController.stopSession());
 
@@ -82,16 +149,16 @@ public class FocusTab extends BaseVTab<BorderPane> {
                 buttons,
                 session
         );
-
-        vContent.getChildren().addAll(
-                title,
-                card
-        );
+        return card;
     }
 
-    public void setObjectiveLocked(boolean locked) {
-        taskField.setEditable(!locked);
+    public void queryMod() {
+        content.getChildren().setAll(queryCard);
     }
+    public void taskMod() {
+        content.getChildren().setAll(taskCard);
+    }
+
     public void updateSessionStage(int actual, int total) {
         session.setText(formatMessage(Translations.get("keep_focus:tabs.focus.sessionLabel"), actual, total));
     }
@@ -104,7 +171,7 @@ public class FocusTab extends BaseVTab<BorderPane> {
         timer.setText(content);
     }
     public void updateObjectiveLabel(String content) {
-        taskField.setText(content);
+        task.setText(content);
     }
 
     @Override

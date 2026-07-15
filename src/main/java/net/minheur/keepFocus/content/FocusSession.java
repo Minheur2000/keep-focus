@@ -16,14 +16,17 @@ public class FocusSession {
     public final Consumer<String> updateObjective;
 
     public final FocusTimer timer;
-    public final Duration sessionDuration = Duration.minutes(25);
-    public final Duration pauseDuration = Duration.minutes(5);
+    public final Duration sessionDuration;
+    public final Duration pauseDuration;
 
-    public FocusSession(int totalSessions, String objective, FocusTimer timer, Consumer<String> updateObjectiveText) {
+    public FocusSession(int totalSessions, String objective, FocusTimer timer, Consumer<String> updateObjectiveText,
+                        Duration sessionDuration, Duration pauseDuration) {
         this.totalSessions = totalSessions;
         this.sessionsObjective = objective;
         this.timer = timer;
         this.updateObjective = updateObjectiveText;
+        this.sessionDuration = sessionDuration;
+        this.pauseDuration = pauseDuration;
     }
 
     public boolean isFinished() {
@@ -32,17 +35,8 @@ public class FocusSession {
 
     public void start() {
         if (timer.hasTimer()) timer.unpause();
-        else if (donePause) playSession();
-        else playPause();
-    }
-
-    private void playPause() {
-        updateObjective.accept(Translations.get("keep_focus:pause"));
-        timer.run(pauseDuration);
-    }
-    private void playSession() {
-        updateObjective.accept(sessionsObjective);
-        timer.run(sessionDuration);
+        else if (donePause) timer.run(sessionDuration);
+        else timer.run(pauseDuration);
     }
 
     public void updateSessionDone() {

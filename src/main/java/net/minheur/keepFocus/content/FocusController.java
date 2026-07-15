@@ -1,6 +1,8 @@
 package net.minheur.keepFocus.content;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.util.Duration;
 import net.minheur.keepFocus.defs.Tabs;
 import net.minheur.potoflux.PotoFlux;
 import net.minheur.potoflux.translations.Translations;
@@ -11,23 +13,48 @@ import org.jetbrains.annotations.NotNull;
 public class FocusController {
     private static final SmartSupplier<FocusTab> focusTab = new SmartSupplier<>(() -> ((FocusTab) PotoFlux.app.getTabMap().get(Tabs.FOCUS.get())));
 
-    public static void startSession(@NotNull String objective) {
-        if (objective.trim().isEmpty()) {
+    public static void makeSession(
+            String objective,
+            String sessionMinutesString,
+            String pauseMinuteString,
+            String sessionAmountString
+    ) {
+        // empty checks
+        if (objective.trim().isEmpty()) { // obj empty
             UiUtils.showErrorPane(Translations.get("keep_focus:noObjective.content"),
-                    Translations.get("keep_focus:noObjective.header"));
+                    Translations.get("keep_focus:noObjective.header")); // todo: rm noObjective
             return;
         }
 
-        if (FocusSession.actualSession == null || FocusSession.actualSession.isFinished()) {
-            FocusSession.actualSession = new FocusSession(4, objective,
-                    new FocusTimer(focusTab.get()::updateTimerLabel),
-                    focusTab.get()::updateObjectiveLabel);
-            resetTime();
+        int sessionMinutes = Integer.parseInt(sessionMinutesString);
+        int pauseMinutes = Integer.parseInt(pauseMinuteString);
+        int sessionInt = Integer.parseInt(sessionAmountString);
+
+        if (isTimerIncorrect(sessionMinutes)) return;
+        if (isTimerIncorrect(pauseMinutes)) return;
+
+        if (sessionInt < 1) { // session 1 minimum
+            UiUtils.showErrorPane("Session should at least be 1!", // todo
+                    Translations.get("keep_focus:noObjective.header")); // todo: obj
         }
 
+        Duration session = Duration.minutes(sessionMinutes);
+        Duration pause = Duration.minutes(pauseMinutes);
+
+        FocusSession.actualSession = new FocusSession(sessionInt, objective,
+                new FocusTimer(focusTab.get()::updateTimerLabel),
+                focusTab.get()::updateObjectiveLabel,
+                session, pause);
+        focusTab.get().taskMod();
+        focusTab.get().updateObjectiveLabel(objective);
+        focusTab.get().updateButtonStates(true, false, false);
+        focusTab.get().updateSessionStage(1, sessionInt);
+        resetTime();
+    }
+
+    public static void startSession() {
         FocusSession session = FocusSession.actualSession;
 
-        focusTab.get().setObjectiveLocked(true);
         focusTab.get().updateButtonStates(false, true, true);
 
         session.start();
@@ -55,19 +82,24 @@ public class FocusController {
         focusTab.get().updateSessionStage(FocusSession.actualSession.donePause ?
                 FocusSession.actualSession.finishedSessions +1 : FocusSession.actualSession.finishedSessions,
                 FocusSession.actualSession.totalSessions);
+        focusTab.get().updateObjectiveLabel(FocusSession.actualSession.donePause ?
+                FocusSession.actualSession.sessionsObjective :
+                Translations.get("keep_focus:pause"));
 
         resetTime();
 
         if (FocusSession.actualSession.isFinished()) {
             FocusSession.actualSession = null;
-            focusTab.get().setObjectiveLocked(false);
             focusTab.get().updateObjectiveLabel("");
+            focusTab.get().queryMod();
         }
 
     }
 
     private static void show(@NotNull Alert a) {
-        if (a.showAndWait().isEmpty()) show(a);
+        Platform.runLater(() -> {
+            if (a.showAndWait().isEmpty()) show(a);
+        });
     }
 
     private static void resetTime() {
@@ -76,5 +108,14 @@ public class FocusController {
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
         focusTab.get().updateTimerLabel(String.format("%02d:%02d", minutes, seconds));
+    }
+
+    private static boolean isTimerIncorrect(int minutes) {
+        if (minutes < 0) { // negative minutes
+            UiUtils.showErrorPane("Please enter a positive amount of minutes!", // todo
+                    Translations.get("keep_focus:noObjective.header")); // todo: obj
+            return true;
+        }
+        return false;
     }
 }
