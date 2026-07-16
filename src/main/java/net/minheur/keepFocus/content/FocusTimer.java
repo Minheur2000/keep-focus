@@ -54,6 +54,7 @@ public class FocusTimer {
     private void end() {
         hasTimer = false;
         timeline.stop();
+        SoundManager.play(SoundManager.PLOC);
         FocusController.sessionEnded();
     }
 
