@@ -59,6 +59,9 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
         add("pause")
                 .en("Pause")
                 .fr("Pause");
+        add("session")
+                .en("Session")
+                .fr("Session");
         add("minutes")
                 .en("Minutes")
                 .fr("Minutes");
