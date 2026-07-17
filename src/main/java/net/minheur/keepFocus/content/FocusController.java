@@ -1,7 +1,9 @@
 package net.minheur.keepFocus.content;
 
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import net.minheur.keepFocus.defs.Tabs;
 import net.minheur.potoflux.PotoFlux;
@@ -9,6 +11,8 @@ import net.minheur.potoflux.translations.Translations;
 import net.minheur.potoflux.ui.UiUtils;
 import net.minheur.potoflux.utils.SmartSupplier;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class FocusController {
     private static final SmartSupplier<FocusTab> focusTab = new SmartSupplier<>(() -> ((FocusTab) PotoFlux.app.getTabMap().get(Tabs.FOCUS.get())));
@@ -79,6 +83,14 @@ public class FocusController {
         FocusSession.actualSession.updateSessionDone();
         focusTab.get().updateButtonStates(false, false, false);
 
+        if (FocusSession.actualSession.isFinished()) {
+            FocusSession.actualSession = null;
+            focusTab.get().updateObjectiveLabel("");
+            focusTab.get().queryMod();
+            // todo: remake + show popup
+            return;
+        }
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION, Translations.get("keep_focus:sessionFinished"), UiUtils.okButton.get());
         show(alert);
 
@@ -91,13 +103,32 @@ public class FocusController {
                 Translations.get("keep_focus:pause"));
 
         resetTime();
+    }
 
-        if (FocusSession.actualSession.isFinished()) {
-            FocusSession.actualSession = null;
-            focusTab.get().updateObjectiveLabel("");
-            focusTab.get().queryMod();
-        }
+    public static void finished() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Objective finished:\n" + FocusSession.actualSession.sessionsObjective); // todo
+        TextField breakTime = new TextField(Double.toString(FocusSession.actualSession.endPauseDuration.toMinutes()));
+        VBox content = new VBox(15);
+        content.getChildren().addAll(
+                new Label("Take a break !"),
+                breakTime
+        );
+        alert.getDialogPane().getChildren().add(content);
 
+        ButtonType no = new ButtonType("No, thanks", ButtonBar.ButtonData.NO); // todo
+        ButtonType yes = new ButtonType("Yes please!", ButtonBar.ButtonData.YES); // todo
+
+        alert.getDialogPane().getButtonTypes().setAll(no, yes);
+        ((Button) alert.getDialogPane().lookupButton(yes))
+                .setDefaultButton(true);
+
+        Optional<ButtonType> response = alert.showAndWait();
+
+        // todo: next
+
+        focusTab.get().makeSessionEarlyFinished();
+        focusTab.get().updateObjectiveLabel("Pause | early-finished"); // todo
     }
 
     private static void show(@NotNull Alert a) {
