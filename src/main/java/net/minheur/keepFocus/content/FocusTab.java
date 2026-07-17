@@ -144,7 +144,7 @@ public class FocusTab extends BaseVTab<ScrollPane> {
         pause.setOnAction(event -> FocusController.pauseSession());
         stop.setOnAction(event -> FocusController.stopSession());
 
-        Button finished = new Button("I finished!"); // todo
+        Button finished = new Button(Translations.get("keep_focus:earlyFinished.button"));
         finished.setOnAction(event -> FocusController.finished());
 
         HBox buttons = new HBox(10, start, pause, stop);
@@ -179,7 +179,7 @@ public class FocusTab extends BaseVTab<ScrollPane> {
         session.setText(formatMessage(Translations.get("keep_focus:tabs.focus.sessionLabel"), actual, total));
     }
     public void makeSessionEarlyFinished() {
-        session.setText("Early-finished pause!"); // todo
+        session.setText(Translations.get("keep_focus:earlyFinished.session"));
     }
 
     public void updateButtonStates(@Nullable Boolean startEnabled, @Nullable Boolean pauseEnabled, @Nullable Boolean stopEnabled) {

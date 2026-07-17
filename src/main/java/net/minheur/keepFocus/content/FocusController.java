@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import net.minheur.keepFocus.defs.Tabs;
+import net.minheur.potoflux.Functions;
 import net.minheur.potoflux.PotoFlux;
 import net.minheur.potoflux.translations.Translations;
 import net.minheur.potoflux.ui.UiUtils;
@@ -84,7 +85,7 @@ public class FocusController {
             FocusSession.actualSession = null;
             focusTab.get().updateObjectiveLabel("");
             focusTab.get().queryMod();
-            UiUtils.showMessagePane("You completed your objective!\nWell done"); // todo
+            UiUtils.showMessagePane(Translations.get("keep_focus:sessionFinished.early"));
         }
 
         FocusSession.actualSession.updateSessionDone();
@@ -94,11 +95,11 @@ public class FocusController {
             FocusSession.actualSession = null;
             focusTab.get().updateObjectiveLabel("");
             focusTab.get().queryMod();
-            UiUtils.showMessagePane("You finished your session!\nYou can start the next one, or restart if you haven't finished."); // todo
+            UiUtils.showMessagePane(Translations.get("keep_focus:sessionFinished.normal"));
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, Translations.get("keep_focus:sessionFinished"), UiUtils.okButton.get());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, Translations.get("keep_focus:sessionFinished.inter"), UiUtils.okButton.get());
         show(alert);
 
         focusTab.get().updateButtonStates(true, false, false);
@@ -114,17 +115,17 @@ public class FocusController {
 
     public static void finished() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Objective finished:\n" + FocusSession.actualSession.sessionsObjective); // todo
+        alert.setHeaderText(Functions.formatMessage(Translations.get("keep_focus:earlyFinished.alert.header"), FocusSession.actualSession.sessionsObjective));
         TextField breakTime = new TextField(Double.toString(FocusSession.actualSession.endPauseDuration.toMinutes()));
         VBox content = new VBox(15);
         content.getChildren().addAll(
-                new Label("Take a break !"), // todo
+                new Label(Translations.get("keep_focus:earlyFinished.alert.content")),
                 breakTime
         );
         alert.getDialogPane().getChildren().add(content);
 
-        ButtonType no = new ButtonType("No, thanks", ButtonBar.ButtonData.NO); // todo
-        ButtonType yes = new ButtonType("Yes please!", ButtonBar.ButtonData.YES); // todo
+        ButtonType no = new ButtonType(Translations.get("keep_focus:earlyFinished.alert.buttons.no"), ButtonBar.ButtonData.NO);
+        ButtonType yes = new ButtonType(Translations.get("keep_focus:earlyFinished.alert.buttons.yes"), ButtonBar.ButtonData.YES);
 
         alert.getDialogPane().getButtonTypes().setAll(no, yes);
         ((Button) alert.getDialogPane().lookupButton(yes))
@@ -134,7 +135,7 @@ public class FocusController {
 
         if (response.isPresent() && response.get().getButtonData() == ButtonBar.ButtonData.YES) {
             focusTab.get().makeSessionEarlyFinished();
-            focusTab.get().updateObjectiveLabel("Pause | early-finished"); // todo
+            focusTab.get().updateObjectiveLabel(Translations.get("keep_focus:earlyFinished.objective"));
             FocusSession.actualSession.runEarlyFinished(Integer.parseInt(breakTime.getText()));
         } else {
             FocusSession.actualSession = null;

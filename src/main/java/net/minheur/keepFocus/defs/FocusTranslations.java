@@ -49,9 +49,16 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
                 .en("Please enter at least 1 minute!")
                 .fr("Veuillez entrer au moins 1 minute !");
 
-        add("sessionFinished")
+        add("sessionFinished", "inter")
                 .en("Your session if finished!\nStart the next one")
                 .fr("Votre session est temriné !\nDémarrez la suivante");
+        add("sessionFinished", "normal")
+                .en("You finished your sessions!\nYou can start the next one, or restart if you haven't completed the objective.")
+                .fr("Vous avez fini vos sessions !\nVous pouvez en commencer une autre serie, ou recommancer si vous n'avez pas complété l'objectif.");
+        add("sessionFinished", "early")
+                .en("You completed your objective!\nWell done")
+                .fr("Vous avez atteint votre objectif \nBien joué");
+
         add("sessionAmount")
                 .en("Amount of sessions")
                 .fr("Nombre de sessions");
@@ -65,6 +72,29 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
         add("endPause")
                 .en("Long pause (Minutes)")
                 .fr("Pause longue (Minutes)");
+
+        add("earlyFinished", "button")
+                .en("I finished!")
+                .fr("J'ai fini !");
+        add("earlyFinished", "session")
+                .en("Early-finished pause")
+                .fr("Pause - objectif terminé en avance");
+        add("earlyFinished", "alert", "header")
+                .en("Objective finished:\n$$1")
+                .fr("Objectif atteint :\n$$1");
+        add("earlyFinished", "alert", "content")
+                .en("Take a break!")
+                .fr("Faites une pause !");
+        add("earlyFinished", "alert", "buttons", "no")
+                .en("No thanks")
+                .fr("Non merci");
+        add("earlyFinished", "alert", "buttons", "yes")
+                .en("Yes please!")
+                .fr("Oui !");
+        add("earlyFinished", "objective")
+                .en("Pause | early-finished")
+                .fr("Pause | fini en avance");
+
     }
 
     // tabs helper
