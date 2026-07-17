@@ -80,6 +80,13 @@ public class FocusController {
     }
 
     public static void sessionEnded() {
+        if (FocusSession.actualSession.finishedSessions == -1) {
+            FocusSession.actualSession = null;
+            focusTab.get().updateObjectiveLabel("");
+            focusTab.get().queryMod();
+            UiUtils.showMessagePane("You completed your objective!\nWell done"); // todo
+        }
+
         FocusSession.actualSession.updateSessionDone();
         focusTab.get().updateButtonStates(false, false, false);
 
@@ -87,7 +94,7 @@ public class FocusController {
             FocusSession.actualSession = null;
             focusTab.get().updateObjectiveLabel("");
             focusTab.get().queryMod();
-            // todo: remake + show popup
+            UiUtils.showMessagePane("You finished your session!\nYou can start the next one, or restart if you haven't finished."); // todo
             return;
         }
 
@@ -111,7 +118,7 @@ public class FocusController {
         TextField breakTime = new TextField(Double.toString(FocusSession.actualSession.endPauseDuration.toMinutes()));
         VBox content = new VBox(15);
         content.getChildren().addAll(
-                new Label("Take a break !"),
+                new Label("Take a break !"), // todo
                 breakTime
         );
         alert.getDialogPane().getChildren().add(content);
@@ -125,10 +132,16 @@ public class FocusController {
 
         Optional<ButtonType> response = alert.showAndWait();
 
-        // todo: next
+        if (response.isPresent() && response.get().getButtonData() == ButtonBar.ButtonData.YES) {
+            focusTab.get().makeSessionEarlyFinished();
+            focusTab.get().updateObjectiveLabel("Pause | early-finished"); // todo
+            FocusSession.actualSession.runEarlyFinished(Integer.parseInt(breakTime.getText()));
+        } else {
+            FocusSession.actualSession = null;
+            focusTab.get().updateObjectiveLabel("");
+            focusTab.get().queryMod();
+        }
 
-        focusTab.get().makeSessionEarlyFinished();
-        focusTab.get().updateObjectiveLabel("Pause | early-finished"); // todo
     }
 
     private static void show(@NotNull Alert a) {

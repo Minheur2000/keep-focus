@@ -49,4 +49,9 @@ public class FocusSession {
         }
         else donePause = true;
     }
+
+    public void runEarlyFinished(int duration) {
+        finishedSessions = -1;
+        timer.run(Duration.minutes(duration));
+    }
 }
