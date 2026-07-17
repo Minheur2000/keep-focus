@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-@Mod(modId = KeepFocus.MOD_ID, version = "1.1", compatibleVersionUrl = "https://technomastery.github.io/PotoFluxAppData/modVersions/keepFocus.json")
+@Mod(modId = KeepFocus.MOD_ID, version = "1.1", compatibleVersions = {"8.0.1"}, compatibleVersionUrl = "https://technomastery.github.io/PotoFluxAppData/modVersions/keepFocus.json")
 public class KeepFocus {
     public static final String MOD_ID = "keep_focus";
 
