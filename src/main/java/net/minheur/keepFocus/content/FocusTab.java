@@ -41,6 +41,8 @@ public class FocusTab extends BaseVTab<ScrollPane> {
     private Button pause;
     private Button stop;
 
+    private Button finished;
+
     private Label session;
     private Label task;
     private Label timer;
@@ -144,7 +146,7 @@ public class FocusTab extends BaseVTab<ScrollPane> {
         pause.setOnAction(event -> FocusController.pauseSession());
         stop.setOnAction(event -> FocusController.stopSession());
 
-        Button finished = new Button(Translations.get("keep_focus:earlyFinished.button"));
+        finished = new Button(Translations.get("keep_focus:earlyFinished.button"));
         finished.setOnAction(event -> FocusController.finished());
 
         HBox buttons = new HBox(10, start, pause, stop);
@@ -186,6 +188,9 @@ public class FocusTab extends BaseVTab<ScrollPane> {
         if (startEnabled != null) start.setDisable(!startEnabled);
         if (pauseEnabled != null) pause.setDisable(!pauseEnabled);
         if (stopEnabled != null) stop.setDisable(!stopEnabled);
+    }
+    public void updateFinishedButton(boolean enabled) {
+        finished.setDisable(!enabled);
     }
     public void updateTimerLabel(String content) {
         timer.setText(content);

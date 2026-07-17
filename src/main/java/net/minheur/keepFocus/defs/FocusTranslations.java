@@ -48,6 +48,9 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
         add("failedSession", "duration")
                 .en("Please enter at least 1 minute!")
                 .fr("Veuillez entrer au moins 1 minute !");
+        add("failedSession", "numFormat")
+                .en("Please enter valid integers!")
+                .fr("Veuillez entrer des entiers valides !");
 
         add("sessionFinished", "inter")
                 .en("Your session if finished!\nStart the next one")

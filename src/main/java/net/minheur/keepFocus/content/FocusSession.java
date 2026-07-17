@@ -20,6 +20,8 @@ public class FocusSession {
     public final Duration pauseDuration;
     public final Duration endPauseDuration;
 
+    public Duration earlyFinishedPause;
+
     public FocusSession(int totalSessions, String objective, FocusTimer timer, Consumer<String> updateObjectiveText,
                         Duration sessionDuration, Duration pauseDuration, Duration endPauseDuration) {
         this.totalSessions = totalSessions;
@@ -36,7 +38,8 @@ public class FocusSession {
     }
 
     public void start() {
-        if (timer.hasTimer()) timer.unpause();
+        if (finishedSessions == -1) timer.run(earlyFinishedPause);
+        else if (timer.hasTimer()) timer.unpause();
         else if (!donePause && finishedSessions == totalSessions) timer.run(endPauseDuration);
         else if (donePause) timer.run(sessionDuration);
         else timer.run(pauseDuration);
@@ -52,6 +55,6 @@ public class FocusSession {
 
     public void runEarlyFinished(int duration) {
         finishedSessions = -1;
-        timer.run(Duration.minutes(duration));
+        earlyFinishedPause = Duration.minutes(duration);
     }
 }

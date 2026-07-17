@@ -32,10 +32,21 @@ public class FocusController {
             return;
         }
 
-        int sessionMinutes = Integer.parseInt(sessionMinutesString);
-        int pauseMinutes = Integer.parseInt(pauseMinuteString);
-        int longPauseMinutes = Integer.parseInt(endPauseString);
-        int sessionInt = Integer.parseInt(sessionAmountString);
+        int sessionMinutes;
+        int pauseMinutes;
+        int longPauseMinutes;
+        int sessionInt;
+
+        try {
+            sessionMinutes = Integer.parseInt(sessionMinutesString);
+            pauseMinutes = Integer.parseInt(pauseMinuteString);
+            longPauseMinutes = Integer.parseInt(endPauseString);
+            sessionInt = Integer.parseInt(sessionAmountString);
+        } catch (NumberFormatException e) {
+            UiUtils.showErrorPane(Translations.get("keep_focus:failedSession.numFormat"),
+                    Translations.get("keep_focus:failedSession"));
+            return;
+        }
 
         if (isTimerIncorrect(sessionMinutes)) return;
         if (isTimerIncorrect(pauseMinutes)) return;
@@ -57,6 +68,7 @@ public class FocusController {
         focusTab.get().taskMod();
         focusTab.get().updateObjectiveLabel(objective);
         focusTab.get().updateButtonStates(true, false, false);
+        focusTab.get().updateFinishedButton(true);
         focusTab.get().updateSessionStage(1, sessionInt);
         resetTime();
     }
@@ -116,13 +128,14 @@ public class FocusController {
     public static void finished() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(Functions.formatMessage(Translations.get("keep_focus:earlyFinished.alert.header"), FocusSession.actualSession.sessionsObjective));
-        TextField breakTime = new TextField(Double.toString(FocusSession.actualSession.endPauseDuration.toMinutes()));
+        TextField breakTime = new TextField(Integer.toString((int) FocusSession.actualSession.endPauseDuration.toMinutes()));
         VBox content = new VBox(15);
+        content.setFillWidth(true);
         content.getChildren().addAll(
                 new Label(Translations.get("keep_focus:earlyFinished.alert.content")),
                 breakTime
         );
-        alert.getDialogPane().getChildren().add(content);
+        alert.getDialogPane().setContent(content);
 
         ButtonType no = new ButtonType(Translations.get("keep_focus:earlyFinished.alert.buttons.no"), ButtonBar.ButtonData.NO);
         ButtonType yes = new ButtonType(Translations.get("keep_focus:earlyFinished.alert.buttons.yes"), ButtonBar.ButtonData.YES);
@@ -134,9 +147,18 @@ public class FocusController {
         Optional<ButtonType> response = alert.showAndWait();
 
         if (response.isPresent() && response.get().getButtonData() == ButtonBar.ButtonData.YES) {
+            try {
+                Integer.parseInt(breakTime.getText());
+            } catch (NumberFormatException e) {
+                UiUtils.showErrorPane(Translations.get("keep_focus:failedSession.numFormat"));
+                finished();
+                return;
+            }
+            focusTab.get().updateFinishedButton(false);
             focusTab.get().makeSessionEarlyFinished();
             focusTab.get().updateObjectiveLabel(Translations.get("keep_focus:earlyFinished.objective"));
             FocusSession.actualSession.runEarlyFinished(Integer.parseInt(breakTime.getText()));
+            resetTime();
         } else {
             FocusSession.actualSession = null;
             focusTab.get().updateObjectiveLabel("");
@@ -154,8 +176,13 @@ public class FocusController {
     private static void resetTime() {
         long totalSeconds = ((long) (FocusSession.actualSession.donePause ? FocusSession.actualSession.sessionDuration :
                 FocusSession.actualSession.pauseDuration).toSeconds());
+
+        if (FocusSession.actualSession.finishedSessions == -1)
+            totalSeconds = (long) FocusSession.actualSession.earlyFinishedPause.toSeconds();
+
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
+
         focusTab.get().updateTimerLabel(String.format("%02d:%02d", minutes, seconds));
     }
 
