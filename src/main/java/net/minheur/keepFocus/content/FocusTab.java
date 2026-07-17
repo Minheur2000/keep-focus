@@ -80,6 +80,12 @@ public class FocusTab extends BaseVTab<BorderPane> {
         pauseTimer.getChildren().addAll(new Label(Translations.get("keep_focus:pause")),
                 pauseMinutes, new Label(Translations.get("keep_focus:minutes")));
 
+        HBox endPauseTimer = new HBox(15);
+        endPauseTimer.setMaxWidth(350);
+        TextField endPauseMinutes = new TextField("20");
+        endPauseTimer.getChildren().addAll(new Label(Translations.get("keep_focus:endPause")),
+                endPauseMinutes, new Label("keep_focus:minutes"));
+
         // session
         Label sessionTitle = new Label(Translations.get("keep_focus:sessionAmount"));
         TextField sessionField = new TextField("4");
@@ -99,12 +105,13 @@ public class FocusTab extends BaseVTab<BorderPane> {
                 taskField.getText(),
                 sessionMinutes.getText(),
                 pauseMinutes.getText(),
+                endPauseMinutes.getText(),
                 sessionField.getText()
         ));
 
         card.getChildren().addAll(
                 taskBox,
-                sessionTimer, pauseTimer,
+                sessionTimer, pauseTimer, endPauseTimer,
                 session,
                 save
         );

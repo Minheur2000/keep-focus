@@ -17,6 +17,7 @@ public class FocusController {
             String objective,
             String sessionMinutesString,
             String pauseMinuteString,
+            String endPauseString,
             String sessionAmountString
     ) {
         // empty checks
@@ -28,10 +29,12 @@ public class FocusController {
 
         int sessionMinutes = Integer.parseInt(sessionMinutesString);
         int pauseMinutes = Integer.parseInt(pauseMinuteString);
+        int longPauseMinutes = Integer.parseInt(endPauseString);
         int sessionInt = Integer.parseInt(sessionAmountString);
 
         if (isTimerIncorrect(sessionMinutes)) return;
         if (isTimerIncorrect(pauseMinutes)) return;
+        if (isTimerIncorrect(longPauseMinutes)) return;
 
         if (sessionInt < 1) { // session 1 minimum
             UiUtils.showErrorPane(Translations.get("keep_focus:failedSession.sessionAmount"),
@@ -40,11 +43,12 @@ public class FocusController {
 
         Duration session = Duration.minutes(sessionMinutes);
         Duration pause = Duration.minutes(pauseMinutes);
+        Duration endPause = Duration.minutes(longPauseMinutes);
 
         FocusSession.actualSession = new FocusSession(sessionInt, objective,
                 new FocusTimer(focusTab.get()::updateTimerLabel),
                 focusTab.get()::updateObjectiveLabel,
-                session, pause);
+                session, pause, endPause);
         focusTab.get().taskMod();
         focusTab.get().updateObjectiveLabel(objective);
         focusTab.get().updateButtonStates(true, false, false);
