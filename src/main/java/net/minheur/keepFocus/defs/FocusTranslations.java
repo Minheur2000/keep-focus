@@ -57,17 +57,14 @@ public class FocusTranslations extends AbstractTranslationsRegistry {
                 .fr("Nombre de sessions");
 
         add("pause")
-                .en("Pause")
-                .fr("Pause");
+                .en("Pause (Minutes)")
+                .fr("Pause (Minutes)");
         add("session")
-                .en("Session")
-                .fr("Session");
+                .en("Session (Minutes)")
+                .fr("Session (Minutes)");
         add("endPause")
-                .en("Long pause")
-                .fr("Pause longue");
-        add("minutes")
-                .en("Minutes")
-                .fr("Minutes");
+                .en("Long pause (Minutes)")
+                .fr("Pause longue (Minutes)");
     }
 
     // tabs helper

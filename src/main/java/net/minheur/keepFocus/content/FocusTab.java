@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -16,15 +17,19 @@ import org.jetbrains.annotations.Nullable;
 
 import static net.minheur.potoflux.Functions.formatMessage;
 
-public class FocusTab extends BaseVTab<BorderPane> {
+public class FocusTab extends BaseVTab<ScrollPane> {
     @Override
     protected void instantiate() {
-        PANEL = new BorderPane();
+        PANEL = new ScrollPane();
         vContent = new VBox(20);
         vContent.setAlignment(Pos.CENTER);
         vContent.setPadding(new Insets(25));
 
-        PANEL.setCenter(vContent);
+        BorderPane container = new BorderPane();
+        container.setCenter(vContent);
+
+        PANEL.setFitToWidth(true);
+        PANEL.setContent(container);
         vContent.getStyleClass().addAll("focusMod", "tabContent");
     }
 
@@ -68,30 +73,28 @@ public class FocusTab extends BaseVTab<BorderPane> {
         taskBox.setMaxWidth(350);
 
         // timers
-        HBox sessionTimer = new HBox(15);
+        VBox sessionTimer = new VBox(5);
         sessionTimer.setMaxWidth(350);
         TextField sessionMinutes = new TextField("25");
-        sessionTimer.getChildren().addAll(new Label(Translations.get("keep_focus:session")),
-                sessionMinutes, new Label(Translations.get("keep_focus:minutes")));
+        sessionTimer.getChildren().addAll(new Label(Translations.get("keep_focus:session")), sessionMinutes);
 
-        HBox pauseTimer = new HBox(15);
+        VBox pauseTimer = new VBox(5);
         pauseTimer.setMaxWidth(350);
         TextField pauseMinutes = new TextField("5");
         pauseTimer.getChildren().addAll(new Label(Translations.get("keep_focus:pause")),
-                pauseMinutes, new Label(Translations.get("keep_focus:minutes")));
+                pauseMinutes);
 
-        HBox endPauseTimer = new HBox(15);
+        VBox endPauseTimer = new VBox(5);
         endPauseTimer.setMaxWidth(350);
         TextField endPauseMinutes = new TextField("20");
-        endPauseTimer.getChildren().addAll(new Label(Translations.get("keep_focus:endPause")),
-                endPauseMinutes, new Label("keep_focus:minutes"));
+        endPauseTimer.getChildren().addAll(new Label(Translations.get("keep_focus:endPause")), endPauseMinutes);
 
         // session
         Label sessionTitle = new Label(Translations.get("keep_focus:sessionAmount"));
         TextField sessionField = new TextField("4");
         sessionField.setPromptText("4");
 
-        HBox session = new HBox(15, sessionTitle, sessionField);
+        VBox session = new VBox(5, sessionTitle, sessionField);
         session.setMaxWidth(350);
 
         VBox card = new VBox(20);
