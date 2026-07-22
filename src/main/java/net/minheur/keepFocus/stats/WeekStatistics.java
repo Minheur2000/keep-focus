@@ -1,4 +1,4 @@
 package net.minheur.keepFocus.stats;
 
-public class WeekStatisitics {
+public class WeekStatistics {
 }
