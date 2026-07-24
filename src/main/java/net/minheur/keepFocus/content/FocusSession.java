@@ -1,7 +1,6 @@
 package net.minheur.keepFocus.content;
 
 import javafx.util.Duration;
-import net.minheur.potoflux.translations.Translations;
 
 import java.util.function.Consumer;
 

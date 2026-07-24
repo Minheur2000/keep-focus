@@ -2,7 +2,6 @@ package net.minheur.keepFocus.content;
 
 import javafx.application.Platform;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import net.minheur.keepFocus.defs.Tabs;
@@ -62,7 +61,7 @@ public class FocusController {
         Duration endPause = Duration.minutes(longPauseMinutes);
 
         FocusSession.actualSession = new FocusSession(sessionInt, objective,
-                new FocusTimer(focusTab.get()::updateTimerLabel),
+                new FocusTimer(focusTab.get()::updateTimer),
                 focusTab.get()::updateObjectiveLabel,
                 session, pause, endPause);
         focusTab.get().taskMod();
@@ -183,7 +182,7 @@ public class FocusController {
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
 
-        focusTab.get().updateTimerLabel(String.format("%02d:%02d", minutes, seconds));
+        focusTab.get().updateTimer(String.format("%02d:%02d", minutes, seconds), 0);
     }
 
     private static boolean isTimerIncorrect(int minutes) {

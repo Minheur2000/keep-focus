@@ -1,5 +1,7 @@
 package net.minheur.keepFocus.content;
 
+import atlantafx.base.controls.RingProgressIndicator;
+import atlantafx.base.theme.Styles;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -45,6 +47,7 @@ public class FocusTab extends BaseVTab<ScrollPane> {
 
     private Label session;
     private Label task;
+    private RingProgressIndicator timerRing;
     private Label timer;
 
     @Override
@@ -131,8 +134,14 @@ public class FocusTab extends BaseVTab<ScrollPane> {
         taskBox.setMaxWidth(350);
 
         // timer
+        timerRing = new RingProgressIndicator(1, true);
+        timerRing.getStyleClass().add("timer");
+
         timer = new Label("25:00");
-        timer.getStyleClass().add("timer");
+        timer.getStyleClass().add(Styles.TITLE_4);
+        timer.setAlignment(Pos.CENTER);
+
+        timerRing.setGraphic(timer);
 
         // buttons
         start = new Button(Translations.get("keep_focus:tabs.focus.button.start"));
@@ -162,7 +171,7 @@ public class FocusTab extends BaseVTab<ScrollPane> {
 
         card.getChildren().addAll(
                 taskBox,
-                timer,
+                timerRing,
                 buttons,
                 finished,
                 session
@@ -192,8 +201,9 @@ public class FocusTab extends BaseVTab<ScrollPane> {
     public void updateFinishedButton(boolean enabled) {
         finished.setDisable(!enabled);
     }
-    public void updateTimerLabel(String content) {
+    public void updateTimer(String content, double progress) {
         timer.setText(content);
+        timerRing.setProgress(progress);
     }
     public void updateObjectiveLabel(String content) {
         task.setText(content);

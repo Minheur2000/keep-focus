@@ -6,11 +6,13 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class FocusTimer {
-    private final Consumer<String> updateTimerText;
+    private final BiConsumer<String, Double> updateTimerText;
 
+    private Duration totalTime;
     private Duration timeLeft;
 
     private boolean hasTimer = false;
@@ -29,7 +31,7 @@ public class FocusTimer {
             })
     );
 
-    public FocusTimer(Consumer<String> updateTimerText) {
+    public FocusTimer(BiConsumer<String, Double> updateTimerText) {
         this.updateTimerText = updateTimerText;
         timeline.setCycleCount(Animation.INDEFINITE);
     }
@@ -37,6 +39,7 @@ public class FocusTimer {
     public void run(@NotNull Duration duration) {
         hasTimer = true;
         timeLeft = duration;
+        totalTime = duration;
 
         updateTimer();
         timeline.play();
@@ -64,12 +67,14 @@ public class FocusTimer {
     }
 
     private void updateTimer() {
+        double progress = (totalTime.subtract(timeLeft).toSeconds()) / totalTime.toSeconds();
+
         long totalSeconds = (long) timeLeft.toSeconds();
 
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
 
-        updateTimerText.accept(String.format("%02d:%02d", minutes, seconds));
+        updateTimerText.accept(String.format("%02d:%02d", minutes, seconds), progress);
     }
 
     public boolean hasTimer() {
